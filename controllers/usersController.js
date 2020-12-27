@@ -29,10 +29,12 @@ const registerUser = async (req, res) => {
 
 		// create and return a JWT
 		payload = {
-			id: user.id
+			user: {
+				id: user.id
+			}
 		};
 		const token = jwt.sign(payload, config.get("jwtSecret"));
-		res.json(token);
+		res.json({ token: token });
 	} catch (e) {
 		console.log(e.message);
 		res.status(500).send("server error");
@@ -57,18 +59,30 @@ const loginUser = async (req, res) => {
 
 		// create and send a JWT
 		payload = {
-			id: user.id
+			user: {
+				id: user.id
+			}
 		};
 
 		const token = jwt.sign(payload, config.get("jwtSecret"));
-		res.status(200).json(token);
+		res.status(200).json({ token: token });
 	} catch (e) {
 		console.log(e.message);
 		res.status(500).send("server error");
 	}
 };
 
+const getLoggedInUser = async (req, res) => {
+	try {
+		const user = await User.findById(req.user.id).select("-password");
+		res.status(200).json(user);
+	} catch (e) {
+		res.status(500).json({ msg: "server errror" });
+	}
+};
+
 module.exports = {
 	registerUser,
-	loginUser
+	loginUser,
+	getLoggedInUser
 };
