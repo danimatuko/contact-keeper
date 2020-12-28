@@ -1,19 +1,19 @@
 const express = require("express");
+const addContact = require("../controllers/contactsController");
+const auth = require("../middlewares/auth");
 const router = express.Router();
 
 // @ route    GET api/contacts
 // @ desc     get all user's contacts
 // @ accsess  private
-router.post("/", (req, res) => {
-	res.send("get all user's contacts");
+router.get("/", (req, res) => {
+	res.send("get all contacts");
 });
 
 // @ route    POST api/contacts
 // @ desc     add a contact
 // @ accsess  private
-router.post("/", (req, res) => {
-	res.send("add a contact");
-});
+router.post("/", auth, addContact);
 
 // @ route    PUT api/contacts:id
 // @ desc     update a contact
