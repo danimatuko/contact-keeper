@@ -22,7 +22,7 @@ const registerUser = async (req, res) => {
 			email: email,
 			password: password
 		});
-		// hash password
+		// hash password before saving in DB
 		const salt = await bycrypt.genSalt(10);
 		user.password = await bycrypt.hash(password, salt);
 		await user.save();

@@ -1,14 +1,15 @@
 const express = require("express");
-const addContact = require("../controllers/contactsController");
+const {
+	addContact,
+	getContacts
+} = require("../controllers/contactsController");
 const auth = require("../middlewares/auth");
 const router = express.Router();
 
 // @ route    GET api/contacts
 // @ desc     get all user's contacts
 // @ accsess  private
-router.get("/", (req, res) => {
-	res.send("get all contacts");
-});
+router.get("/", auth, getContacts);
 
 // @ route    POST api/contacts
 // @ desc     add a contact

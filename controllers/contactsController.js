@@ -31,4 +31,19 @@ const addContact = async (req, res) => {
 	}
 };
 
-module.exports = addContact;
+const getContacts = async (req, res) => {
+	const userId = req.user.id;
+
+	try {
+		const contacts = await Contact.find({ user: userId });
+
+		return !contacts.length
+			? res.status(200).json({ msg: "You have no contacts yet..." })
+			: res.status(200).json(contacts);
+	} catch (e) {
+		res.status(500).json({ msg: "server error", error: e.message });
+	}
+	res.json(contacts);
+};
+
+module.exports = { addContact, getContacts };
