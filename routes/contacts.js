@@ -1,7 +1,8 @@
 const express = require("express");
 const {
 	addContact,
-	getContacts
+	getContacts,
+	updateContact
 } = require("../controllers/contactsController");
 const auth = require("../middlewares/auth");
 const router = express.Router();
@@ -16,12 +17,10 @@ router.get("/", auth, getContacts);
 // @ accsess  private
 router.post("/", auth, addContact);
 
-// @ route    PUT api/contacts:id
+// @ route    PUT api/contacts/:id
 // @ desc     update a contact
 // @ accsess  private
-router.put("/:id", (req, res) => {
-	res.send("update a contact");
-});
+router.put("/:id", auth, updateContact);
 
 // @ route    DELETE api/contacts:id
 // @ desc     delete a contact
