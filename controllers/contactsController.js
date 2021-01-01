@@ -68,12 +68,13 @@ const updateContact = async (req, res) => {
 	const { name, email, phone, type } = req.body;
 
 	try {
+		// search in the logged in user's contacts
 		const contact = await Contact.findOne({
 			user: userId
 		});
 
-		if (!contact.length)
-			return res.status(401).json({
+		if (contact.length == 0)
+			return res.status(400).json({
 				msg: "Contact not found"
 			});
 
@@ -113,8 +114,45 @@ const updateContact = async (req, res) => {
 	}
 };
 
+const deleteContact = async (req, res) => {
+	const loggedInUser = req.user;
+	const id = req.params.id;
+
+	try {
+		const contact = await Contact.findById(id);
+
+		if (!contact) {
+			return res.status(400).json({
+				msg: "Contact not found"
+			});
+		}
+		// check if user own the contact
+		if (loggedInUser.id === contact.user.toString()) {
+			try {
+				await Contact.findByIdAndRemove(id);
+				res.status(200).json({ msg: "Contact deleted", contact });
+			} catch (e) {
+				res.status(500).json({
+					msg: "Failed to delete contact",
+					error: e.message
+				});
+			}
+		} else {
+			res.status(401).json({
+				msg: "Accsess denied, you are not allowed to delete this conatact."
+			});
+		}
+	} catch (e) {
+		res.status(500).json({
+			msg: "server error",
+			error: e.message
+		});
+	}
+};
+
 module.exports = {
 	addContact,
 	getContacts,
-	updateContact
+	updateContact,
+	deleteContact
 };

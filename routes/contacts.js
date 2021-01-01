@@ -2,7 +2,8 @@ const express = require("express");
 const {
 	addContact,
 	getContacts,
-	updateContact
+	updateContact,
+	deleteContact
 } = require("../controllers/contactsController");
 const auth = require("../middlewares/auth");
 const router = express.Router();
@@ -25,8 +26,6 @@ router.put("/:id", auth, updateContact);
 // @ route    DELETE api/contacts:id
 // @ desc     delete a contact
 // @ accsess  private
-router.delete("/:id", (req, res) => {
-	res.send("delete a contact");
-});
+router.delete("/:id", auth, deleteContact);
 
 module.exports = router;
