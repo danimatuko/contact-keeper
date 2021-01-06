@@ -1,25 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Button, Form } from "semantic-ui-react";
+import contactContext from "../context/contacts/contactContext";
 
 const ContactForm = () => {
-	const [contact, setContact] = useState({
+	const { addContact } = useContext(contactContext);
+	const initialState = {
 		name: "",
 		email: "",
 		phone: "",
 		type: "personal"
-	});
+	};
+
+	const [contact, setContact] = useState(initialState);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setContact({ ...contact, [name]: value });
 	};
 
-	const handleSubmit = (e) => console.log(contact);
+	const handleSubmit = (e) => {
+		console.log(contact);
+		addContact(contact);
+		setContact(initialState);
+	};
 
 	const { name, email, phone, type } = contact;
 
 	return (
-		<Form onSubmit={() => handleSubmit()}>
+		<Form onSubmit={(e) => handleSubmit(e)}>
 			<Form.Field>
 				<label>Name</label>
 				<input
