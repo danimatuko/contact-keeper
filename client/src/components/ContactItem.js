@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
 	Card,
 	CardContent,
@@ -7,7 +7,13 @@ import {
 	CardMeta
 } from "semantic-ui-react";
 
+import contactContext from "../context/contacts/contactContext";
+
 const ContactItem = ({ contact }) => {
+	const { deleteContact, updateContact, setUpdateContact } = useContext(
+		contactContext
+	);
+
 	return (
 		<Card>
 			<CardContent>
@@ -26,10 +32,16 @@ const ContactItem = ({ contact }) => {
 			</CardContent>
 			<CardContent extra>
 				<div className="ui two buttons">
-					<Button basic color="green">
+					<Button
+						basic
+						color="green"
+						onClick={() => {
+							updateContact(contact);
+							setUpdateContact(contact);
+						}}>
 						Edit
 					</Button>
-					<Button basic color="red">
+					<Button basic color="red" onClick={() => deleteContact(contact.id)}>
 						Delete
 					</Button>
 				</div>
