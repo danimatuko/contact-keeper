@@ -4,7 +4,9 @@ const {
 	ADD_CONTACT,
 	UPDATE_CONTACT,
 	SET_UPDATE_CONTACT,
-	DELETE_CONTACT
+	DELETE_CONTACT,
+	FILTER_CONTACTS,
+	CLEAR_FILTER
 } = actions;
 
 const contactReducer = (state, action) => {
@@ -33,6 +35,20 @@ const contactReducer = (state, action) => {
 				contacts: state.contacts.filter(
 					(contact) => contact.id !== action.payload && contact
 				)
+			};
+
+		case FILTER_CONTACTS:
+			return {
+				...state,
+				filterdContacts: state.contacts.filter((contact) => {
+					const regex = new RegExp(`${action.payload}`, "gi");
+					return contact.name.match(regex);
+				})
+			};
+		case CLEAR_FILTER:
+			return {
+				...state,
+				filterdContacts: null
 			};
 
 		default:

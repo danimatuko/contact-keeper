@@ -19,23 +19,28 @@ const ContactForm = () => {
 
 	const [contact, setContact] = useState(initialState);
 
+	useEffect(() => {
+		contactToUpdate ? setContact(contactToUpdate) : setContact(initialState);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [contactToUpdate]);
+
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setContact({ ...contact, [name]: value });
 	};
 
 	const handleSubmit = (e) => {
+		// e.preventDefault();
 		contactToUpdate ? updateContact(contact) : addContact(contact);
+		clearAll();
+	};
+
+	const clearAll = () => {
 		setContact(initialState);
 		setUpdateContact(null);
 	};
 
 	const { name, email, phone, type } = contact;
-
-	useEffect(() => {
-		contactToUpdate ? setContact(contactToUpdate) : setContact(initialState);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [contactToUpdate]);
 
 	return (
 		<Fragment>
@@ -43,7 +48,7 @@ const ContactForm = () => {
 				{contactToUpdate ? " Update Contact" : "Add Contact"}
 			</Header>
 
-			<Form onSubmit={(e) => handleSubmit(e)}>
+			<Form size="large" onSubmit={(e) => handleSubmit(e)}>
 				<Form.Field>
 					<label>Name</label>
 					<input
@@ -73,8 +78,7 @@ const ContactForm = () => {
 				</Form.Field>
 
 				<Form.Group inline>
-					<label>Type</label>
-
+					<label>Type:</label>
 					<Form.Field>
 						<label>Personal</label>
 						<input
@@ -102,6 +106,11 @@ const ContactForm = () => {
 				<Button type="submit" color="linkedin">
 					{contactToUpdate ? " Update Contact" : "Add Contact"}
 				</Button>
+				{contactToUpdate && (
+					<Button type="button" color="grey" onClick={clearAll}>
+						Cancel
+					</Button>
+				)}
 			</Form>
 		</Fragment>
 	);
