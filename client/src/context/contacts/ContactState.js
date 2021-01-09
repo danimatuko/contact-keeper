@@ -1,7 +1,7 @@
 import React, { useReducer, useContext } from "react";
 import ContactContext from "./contactContext";
 import contactReducer from "./contactReducer";
-import actions from "../actions";
+import actions from "./actions";
 import { v4 as uuid } from "uuid";
 
 const ContactState = (props) => {

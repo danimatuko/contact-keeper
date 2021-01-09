@@ -22,6 +22,7 @@ const Navbar = () => {
 
 			<MenuItem as={Link} to="/" content="Home" />
 			<MenuItem as={Link} to="/about" content="About" />
+			<MenuItem as={Link} to="/register" content="Register" />
 		</Menu>
 	);
 };
