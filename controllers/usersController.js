@@ -8,14 +8,14 @@ const registerUser = async (req, res) => {
 	try {
 		await validateRegister(req.body);
 	} catch (e) {
-		return res.status(400).json(e.errors);
+		return res.status(400).json({ error: e.errors });
 	}
 
 	const { name, email, password } = req.body;
 
 	try {
 		let user = await User.findOne({ email: email });
-		if (user) return res.status(400).json({ msg: "user already exist" });
+		if (user) return res.status(400).json({ msg: ["user already exist"] });
 
 		user = new User({
 			name: name,

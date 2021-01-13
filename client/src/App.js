@@ -7,18 +7,25 @@ import { Container } from "semantic-ui-react";
 import RegisterForm from "./components/RegisterForm";
 import ContactState from "./context/contacts/ContactState";
 import AuthState from "./context/auth/AuthState";
+import AlertState from "./context/alert/AlertState";
+import Alert from "./components/Alert";
+import React, { useContext } from "react";
+import alertContext from "./context/alert/alertContext";
 
 const App = () => {
 	return (
 		<AuthState>
 			<ContactState>
 				<BrowserRouter>
-					<Navbar />
-					<Container>
-						<Route path="/" exact component={HomePage} />
-						<Route path="/about" component={About} />
-						<Route path="/register" component={RegisterForm} />
-					</Container>
+					<AlertState>
+						<Navbar />
+						<Container>
+							<Alert />
+							<Route path="/" exact component={HomePage} />
+							<Route path="/about" component={About} />
+							<Route path="/register" component={RegisterForm} />
+						</Container>
+					</AlertState>
 				</BrowserRouter>
 			</ContactState>
 		</AuthState>

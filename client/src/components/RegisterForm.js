@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Button, Form, Header } from "semantic-ui-react";
-import axios from "axios";
-
+import authContext from "../context/auth/authContext";
+import alertContext from "../context/alert/alertContext";
+import * as Yup from "yup";
 const RegisterForm = () => {
+	const { register, error } = useContext(authContext);
+	const { setAlert, removeAlert } = useContext(alertContext);
+
 	const initialState = {
 		name: "",
 		email: "",
@@ -18,22 +22,42 @@ const RegisterForm = () => {
 		setNewUser({ ...newUser, [name]: value });
 	};
 
-	const registerUser = async (newUser) => {
-		try {
-			const response = await axios.post("api/users", newUser);
-			console.log(response);
-		} catch (e) {
-			console.log(e.message);
-		}
+	const registerSchema = Yup.object().shape({
+		name: Yup.string(),
+		email: Yup.string()
+			.email("Please enter a correct email address")
+			.required("Email is required"),
+		password: Yup.string()
+			.min(6, "Password must contain at leats 6 characters")
+			.required("Password is required"),
+		password2: Yup.string().oneOf(
+			[Yup.ref("password"), null],
+			"Passwords must match"
+		)
+	});
+
+	const validateRegister = (newUser) => {
+		return registerSchema.validate(newUser, { abortEarly: false });
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		const newUser = {
 			name,
 			email,
-			password
+			password,
+			password2
 		};
-		registerUser(newUser);
+
+		try {
+			await validateRegister(newUser);
+			removeAlert();
+			if (error) setAlert(error);
+			await register(newUser);
+		} catch (e) {
+			console.log(e);
+			removeAlert();
+			setAlert(e.errors);
+		}
 	};
 
 	return (
