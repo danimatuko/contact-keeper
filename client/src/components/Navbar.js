@@ -5,7 +5,7 @@ import React from "react";
 
 const Navbar = () => {
 	return (
-		<Menu as="nav" color="blue" inverted> 
+		<Menu as="nav" color="blue" inverted>
 			<MenuItem>
 				<i
 					className="fas fa-id-card-alt fa-2x"
@@ -19,10 +19,10 @@ const Navbar = () => {
 					/>
 				</MenuHeader>
 			</MenuItem>
-
 			<MenuItem as={Link} to="/" content="Home" />
 			<MenuItem as={Link} to="/about" content="About" />
 			<MenuItem as={Link} to="/register" content="Register" />
+			<MenuItem as={Link} to="/login" content="Login" />
 		</Menu>
 	);
 };

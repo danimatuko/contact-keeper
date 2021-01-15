@@ -9,8 +9,8 @@ import ContactState from "./context/contacts/ContactState";
 import AuthState from "./context/auth/AuthState";
 import AlertState from "./context/alert/AlertState";
 import Alert from "./components/Alert";
-import React, { useContext } from "react";
-import alertContext from "./context/alert/alertContext";
+import React from "react";
+import LoginForm from "./components/LoginForm";
 
 const App = () => {
 	return (
@@ -24,6 +24,7 @@ const App = () => {
 							<Route path="/" exact component={HomePage} />
 							<Route path="/about" component={About} />
 							<Route path="/register" component={RegisterForm} />
+							<Route path="/login" component={LoginForm} />
 						</Container>
 					</AlertState>
 				</BrowserRouter>

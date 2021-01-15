@@ -1,11 +1,16 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Button, Form, Header } from "semantic-ui-react";
 import authContext from "../context/auth/authContext";
 import alertContext from "../context/alert/alertContext";
 import * as Yup from "yup";
-const RegisterForm = () => {
-	const { register, error } = useContext(authContext);
+
+const RegisterForm = (props) => {
+	const { register, error, isAuthenticated } = useContext(authContext);
 	const { setAlert, removeAlert } = useContext(alertContext);
+
+	useEffect(() => {
+		if (isAuthenticated) props.history.push("/");
+	}, [isAuthenticated, props.history]);
 
 	const initialState = {
 		name: "",
@@ -66,7 +71,7 @@ const RegisterForm = () => {
 				Register
 			</Header>
 
-			<Form size="large" onSubmit={(e) => handleSubmit(e)}>
+			<Form size="medium" onSubmit={(e) => handleSubmit(e)}>
 				<Form.Field>
 					<label>Name</label>
 					<input
@@ -103,7 +108,10 @@ const RegisterForm = () => {
 						onChange={(e) => handleChange(e)}
 					/>
 				</Form.Field>
-				<Button type="submit" color="linkedin">
+				<Button
+					type="submit"
+					color="linkedin"
+					style={{ display: "block", margin: "auto" }}>
 					Register
 				</Button>
 			</Form>
